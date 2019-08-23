@@ -27,16 +27,8 @@ router.post('/', (req, res) => {
             else {
               // SAVING THE DATA IN DB ******************
               newUser.password = hash
-              newUser.save((err, user) => {
-                if (err) console.log(err)
-                else {
-                  // Create a JWT Token -> jwt.sign is the method that is used to create a JSON web token..................
-                  jwt.sign({ userID: user.id }, 'motu', function (err, token) {
-                    if (err) throw err;
-                    res.json(token);
-                  })
-                }
-              })
+              newUser.save()
+              .then(()=>res.send("done"))
             }
           })
         })
