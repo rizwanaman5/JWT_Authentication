@@ -8,38 +8,28 @@ const bcrypt = require('bcryptjs');
 // VERIFY 
 
 router.post('/', (req, res) => {
-    console.log("hello", req.body.email)
-    db.User.findOne({ email: req.body.email })
-        .then((user) => {
-            console.log(user)
-            id = user._id;
-            hash = user.password;
-            bcrypt.compare(req.body.password, hash).then((res) => {
-                // res === true
-                console.log('****************',res)
-                    jwt.sign({ userID: id }, 'motu', function (err, token) {
-                        if (err) throw err;
-                        res.json(token);
-            });
-            // bcrypt.compare(req.body.password, hash, function (err, response) {
-            //     if (response) {
-            //         console.log('****************',response)
-            //         jwt.sign({ userID: id }, 'motu', function (err, token) {
-            //             if (err) throw err;
-            //             res.json(token);
-            //         })
-            //     }
-            //     // if (response) {
-            //     //     console.log(response)
-            //     //     // Create JWT Token
-            //     //     jwt.sign({ _userID: response.id }, 'motu', function (err, token) {
-            //     //         if (err) throw err;
-            //     //         res.json(token);
-            //     //     })
-            //     //     // res.json({login: 'success'})
-            //     // }
+    console.log("hello", req.body.password)
+    db.User.findOne({ email: req.body.email }, (err, user) => {
+        if (!user) {
+            res.json({ status: 'User Not Found' })
+        }
+        // ELSE COMPARE PASSWORD
+        User.comparePassword(req.body.password, (err, isMatch) => {
+            if (!isMatch) {
+                res.json({ status: 'Password verification Failed' })
+            }
+            // IF VALID USER
+            jwt.sign({ userID: user._id }, 'Motu')
+            localStorage.setItem('jwtToken', token);
+            res.json({ 'token': token })
+            User.token = token;
+            User.save(function (err, user) {
+                if (err) return cb(err);
+                cb(null, user)
             })
+
         })
-})
+    })
+});
 
 module.exports = router;

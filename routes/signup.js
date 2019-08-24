@@ -13,24 +13,22 @@ router.post('/', (req, res) => {
   db.User.findOne({ email: req.body.email })
     .then((user) => {
       if (user) {
-        res.json({ email: "email already exists" })
+        res.json({ Satus: "User already exists" })
       } else {
-        const newUser = new db.User({
+        const User = new db.User({
           name: req.body.name,
           email: req.body.email,
           password: req.body.password
         })
-        // ENCRYPTING PASSWORDS USING BCRYPTJS ***********************.............................
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash('password', salt, (err, hash) => {
-            if (err) throw err;
-            else {
-              // SAVING THE DATA IN DB ******************
-              newUser.password = hash
-              newUser.save()
-              .then(()=>res.send("done"))
-            }
+        // SAVING THE DATA IN DB ******************
+        User.save((err, doc) => {
+          if (err) throw err;
+          bcrypt.genSalt(10, function (err, salt) {
+            bcrypt.hash(User.password, salt, function (err, hash) {
+              User.password = hash;
+            })
           })
+          res.json({ 'status': 'Data saved successfully' })
         })
       }
     })
