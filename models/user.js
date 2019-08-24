@@ -20,23 +20,23 @@ const userSchema = new mongoose.Schema({
 })
 
 // PASSWORD HASHING MIDDLEWARE -> DURING SIGN UP ********************
-// userSchema.pre('save', function (next) {
-//     // Only Hash password if it has been changed, or is new
-//     if (User.isModified) {
+userSchema.pre('save', function (next) {
+    // Only Hash password if it has been changed, or is new
+    if (User.isModified) {
 
-//         // Bcrypt JS
-//         bcrypt.genSalt(10, function (err, salt) {
-//             if (err) return next(err)
+        // Bcrypt JS
+        bcrypt.genSalt(10, function (err, salt) {
+            if (err) return next(err)
 
-//             bcrypt.hash(User.password, salt, function (err, hash) {
-//                 User.password = hash;
-//                 next();
-//             })
-//         })
-//     } else {
-//         next();
-//     }
-// })
+            bcrypt.hash(User.password, salt, function (err, hash) {
+                User.password = hash;
+                next();
+            })
+        })
+    } else {
+        next();
+    }
+})
 
 // PASSWORD VERIFICATION -> DURING SIGN IN **********************
 userSchema.methods.comparePassword = function (userPassword, cb) {

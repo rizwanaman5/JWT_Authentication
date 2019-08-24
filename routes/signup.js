@@ -23,11 +23,11 @@ router.post('/', (req, res) => {
         // SAVING THE DATA IN DB ******************
         User.save((err, doc) => {
           if (err) throw err;
-          bcrypt.genSalt(10, function (err, salt) {
-            bcrypt.hash(User.password, salt, function (err, hash) {
-              User.password = hash;
-            })
-          })
+          // bcrypt.genSalt(10, function (err, salt) {
+          //   bcrypt.hash(User.password, salt, function (err, hash) {
+          //     User.password = hash;
+          //   })
+          // })
           res.json({ 'status': 'Data saved successfully' })
         })
       }
