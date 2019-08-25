@@ -21,6 +21,8 @@ const userSchema = new mongoose.Schema({
 
 // PASSWORD HASHING MIDDLEWARE -> DURING SIGN UP ********************
 userSchema.pre('save', function (next) {
+    // var User = this;
+
     // Only Hash password if it has been changed, or is new
     if (User.isModified) {
 
@@ -29,6 +31,7 @@ userSchema.pre('save', function (next) {
             if (err) return next(err)
 
             bcrypt.hash(User.password, salt, function (err, hash) {
+                console.log('from userModels', User.password)
                 User.password = hash;
                 next();
             })
@@ -43,6 +46,8 @@ userSchema.methods.comparePassword = function (userPassword, cb) {
     bcrypt.compare(userPassword, User.password, function (err, isMatch) {
         if (err) return cb(err);
         cb(null, isMatch);
+        console.log(User.password);
+        
     })
 }
 

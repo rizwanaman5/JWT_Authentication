@@ -13,7 +13,7 @@ router.post('/', (req, res) => {
   db.User.findOne({ email: req.body.email })
     .then((user) => {
       if (user) {
-        res.json({ Satus: "User already exists" })
+        res.json({ Error: "User already exists" })
       } else {
         const User = new db.User({
           name: req.body.name,
