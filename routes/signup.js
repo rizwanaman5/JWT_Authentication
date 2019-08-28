@@ -15,13 +15,13 @@ router.post('/', (req, res) => {
       if (user) {
         res.json({ Error: "User already exists" })
       } else {
-        const User = new db.User({
+        const user = new db.User({
           name: req.body.name,
           email: req.body.email,
           password: req.body.password
         })
         // SAVING THE DATA IN DB ******************
-        User.save((err, doc) => {
+        user.save((err, doc) => {
           if (err) throw err;
           // bcrypt.genSalt(10, function (err, salt) {
           //   bcrypt.hash(User.password, salt, function (err, hash) {

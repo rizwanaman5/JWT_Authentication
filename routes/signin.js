@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
         .then((user) => {
             // COMPARE PASSWORD
             console.log(user.email, email)
-            User.comparePassword(req.body.password, function (err, isMatch) {
+            user.comparePassword(req.body.password, function (err, isMatch) {
                 if (!isMatch) {
                     res.json({ status: 'Password verification Failed' })
                 }
@@ -26,10 +26,12 @@ router.post('/', (req, res) => {
                 jwt.sign({ userID: user._id }, 'Motu', function (err, token) {
                     // localStorage.setItem('jwtToken', token);
                     res.json({ token: token })
-                    User.token = token;
-                    User.save(function (err, user) {
-                        if (err) return cb(err);
-                        cb(null, user)
+                    console.log(token);
+
+                    user.token = token;
+                    user.save(function (err, user) {
+                        if (err) throw err;
+                        console.log(user)
                     })
                 })
             })
@@ -37,28 +39,6 @@ router.post('/', (req, res) => {
             // res.send(err);
             res.json({ status: 'User Not Found' })
         })
-
-    // db.User.findOne({ email: req.body.email }, (err, user) => {
-    //     if (!user) {
-    //         res.json({ status: 'User Not Found' })
-    //     }
-    //     // ELSE COMPARE PASSWORD
-    //     User.comparePassword(req.body.password, (err, isMatch) => {
-    //         if (!isMatch) {
-    //             res.json({ status: 'Password verification Failed' })
-    //         }
-    //         // IF VALID USER
-    //         jwt.sign({ userID: user._id }, 'Motu', function (err, token) {
-    //             // localStorage.setItem('jwtToken', token);
-    //             res.json({ token: token })
-    //             User.token = token;
-    //             User.save(function (err, user) {
-    //                 if (err) return cb(err);
-    //                 cb(null, user)
-    //             })
-    //         })
-    //     })
-    // })
 });
 
 module.exports = router;
