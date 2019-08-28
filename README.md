@@ -13,5 +13,5 @@ https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
 
 MongoDB blog on JWT Authentication -> Part-2
 https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-2
-<br/>
+<br><br>
 https://medium.com/@maison.moa/using-jwt-json-web-tokens-to-authorize-users-and-protect-api-routes-3e04a1453c3e
